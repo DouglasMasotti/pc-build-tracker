@@ -6,252 +6,157 @@
 <title>Build Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --surface2: #18181f;
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.13);
-    --accent: #00e5a0;
-    --accent2: #7b61ff;
-    --accent3: #ff6b35;
-    --text: #f0f0f5;
-    --muted: #6b6b80;
-    --muted2: #9999aa;
-    --paid: #00c47a;
-    --pending: #fbbf24;
-    --obs: #60a5fa;
-    --mono: 'Space Mono', monospace;
-    --sans: 'DM Sans', sans-serif;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 14px;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+:root {
+  --bg:#0a0a0f; --surface:#111118; --surface2:#18181f;
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
+  --accent:#00e5a0; --accent2:#7b61ff; --accent3:#ff6b35;
+  --text:#f0f0f5; --muted:#6b6b80; --muted2:#9999aa;
+  --paid:#00c47a; --pending:#fbbf24; --obs:#60a5fa;
+  --mono:'Space Mono',monospace; --sans:'DM Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;min-height:100vh;overflow-x:hidden}
 
-  /* HEADER */
-  header {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(10,10,15,0.92);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 16px 12px;
-  }
-  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-  .logo { font-family: var(--mono); font-size: 13px; color: var(--accent); letter-spacing: 0.08em; }
-  .logo span { color: var(--muted); }
-  .badge-year { font-family: var(--mono); font-size: 10px; background: var(--surface2); border: 1px solid var(--border2); color: var(--muted2); padding: 3px 8px; border-radius: 4px; }
+/* HEADER */
+header{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:12px 16px 10px}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.logo{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:0.08em}
+.logo span{color:var(--muted)}
+.badge-year{font-family:var(--mono);font-size:10px;background:var(--surface2);border:1px solid var(--border2);color:var(--muted2);padding:3px 8px;border-radius:4px}
 
-  /* BUDGET BAR */
-  .budget-bar-wrap { display: flex; align-items: center; gap: 10px; }
-  .budget-label { font-size: 11px; color: var(--muted); white-space: nowrap; font-family: var(--mono); }
-  .budget-track { flex: 1; height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
-  .budget-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.6s cubic-bezier(.4,0,.2,1); }
-  .budget-pct { font-size: 11px; font-family: var(--mono); color: var(--accent); white-space: nowrap; }
+/* BUDGET SUMMARY */
+.budget-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.bsum-item{background:var(--surface2);border-radius:8px;padding:8px 10px}
+.bsum-label{font-size:9px;font-family:var(--mono);color:var(--muted);letter-spacing:0.06em;margin-bottom:2px}
+.bsum-val{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--text)}
+.bsum-val.green{color:var(--paid)}
+.bsum-val.amber{color:var(--pending)}
+.bsum-val.red{color:#f87171}
+.bsum-sub{font-size:9px;color:var(--muted);margin-top:1px}
 
-  /* TABS */
-  .tabs { display: flex; gap: 4px; padding: 12px 16px 0; overflow-x: auto; scrollbar-width: none; }
-  .tabs::-webkit-scrollbar { display: none; }
-  .tab-btn {
-    font-family: var(--sans); font-size: 12px; font-weight: 500;
-    padding: 6px 14px; border-radius: 20px;
-    border: 1px solid var(--border2);
-    background: transparent; color: var(--muted2);
-    cursor: pointer; white-space: nowrap; transition: all 0.2s;
-  }
-  .tab-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+/* BUDGET BAR */
+.budget-bar-wrap{display:flex;align-items:center;gap:8px}
+.budget-label{font-size:10px;color:var(--muted);white-space:nowrap;font-family:var(--mono)}
+.budget-track{flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.budget-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.5s cubic-bezier(.4,0,.2,1)}
+.budget-fill.over{background:linear-gradient(90deg,#f87171,#ef4444)}
+.budget-pct{font-size:10px;font-family:var(--mono);color:var(--accent);white-space:nowrap;min-width:36px;text-align:right}
 
-  /* MAIN */
-  main { padding: 16px; padding-bottom: 80px; }
+/* TABS */
+.tabs{display:flex;gap:4px;padding:10px 16px 0;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{font-family:var(--sans);font-size:12px;font-weight:500;padding:6px 14px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--muted2);cursor:pointer;white-space:nowrap;transition:all 0.2s}
+.tab-btn.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
 
-  /* SECTION HEADER */
-  .section-header { margin-bottom: 16px; }
-  .section-title { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-  .section-sub { font-size: 13px; color: var(--muted2); }
+main{padding:14px 16px 90px}
+.tab-section{display:none}
+.tab-section.active{display:block}
 
-  /* TOTAL CARD */
-  .total-card {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 16px;
-    padding: 18px;
-    margin-bottom: 16px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-  .total-item .t-label { font-size: 11px; color: var(--muted); font-family: var(--mono); margin-bottom: 4px; }
-  .total-item .t-val { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--text); }
-  .total-item .t-val.green { color: var(--paid); }
-  .total-item .t-val.amber { color: var(--pending); }
-  .total-item .t-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .total-divider { grid-column: 1/-1; height: 1px; background: var(--border); }
+/* SECTION GROUP */
+.section-group{margin-bottom:18px}
+.section-group-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;padding-left:2px}
 
-  /* COMPONENT CARD */
-  .comp-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    margin-bottom: 10px;
-    overflow: hidden;
-    transition: border-color 0.2s;
-  }
-  .comp-card:active { border-color: var(--border2); }
-  .comp-card.status-paid { border-left: 3px solid var(--paid); }
-  .comp-card.status-pending { border-left: 3px solid var(--pending); }
-  .comp-card.status-missing { border-left: 3px solid var(--muted); }
+/* CATEGORY BLOCK */
+.cat-block{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:12px}
+.cat-header{padding:13px 14px 11px;display:flex;align-items:center;gap:10px}
+.cat-icon{width:34px;height:34px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.cat-info{flex:1;min-width:0}
+.cat-type{font-size:9px;font-family:var(--mono);color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1px}
+.cat-selected-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cat-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.cat-price-eur{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--text)}
+.cat-price-brl{font-size:10px;color:var(--muted);font-family:var(--mono)}
 
-  .card-header {
-    padding: 14px 14px 12px;
-    display: flex; align-items: flex-start; gap: 12px;
-    cursor: pointer;
-  }
-  .card-icon {
-    width: 36px; height: 36px; border-radius: 10px;
-    background: var(--surface2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-  }
-  .card-info { flex: 1; min-width: 0; }
-  .card-type { font-size: 10px; font-family: var(--mono); color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px; }
-  .card-name { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .card-source { font-size: 11px; color: var(--muted); margin-top: 3px; }
+/* STATUS BADGE */
+.status-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;font-family:var(--mono);padding:2px 7px;border-radius:20px}
+.status-badge::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor}
+.status-badge.paid{background:rgba(0,196,122,0.12);color:var(--paid)}
+.status-badge.pending{background:rgba(251,191,36,0.12);color:var(--pending)}
+.status-badge.missing{background:rgba(107,107,128,0.15);color:var(--muted2)}
 
-  .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
-  .status-dot {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 10px; font-weight: 600; font-family: var(--mono);
-    padding: 3px 8px; border-radius: 20px;
-  }
-  .status-dot.paid { background: rgba(0,196,122,0.12); color: var(--paid); }
-  .status-dot.pending { background: rgba(251,191,36,0.12); color: var(--pending); }
-  .status-dot.missing { background: rgba(107,107,128,0.15); color: var(--muted2); }
-  .status-dot::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+/* OPTIONS LIST */
+.options-list{border-top:1px solid var(--border)}
+.option-item{border-bottom:1px solid var(--border);transition:background 0.15s}
+.option-item:last-child{border-bottom:none}
+.option-item.selected{background:rgba(0,229,160,0.04)}
+.option-row{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;cursor:pointer}
 
-  .card-price { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text); }
-  .card-price-sub { font-size: 10px; color: var(--muted); font-family: var(--mono); }
+/* RADIO */
+.radio-wrap{flex-shrink:0;margin-top:2px}
+.radio-btn{width:18px;height:18px;border-radius:50%;border:2px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;transition:all 0.2s;cursor:pointer}
+.radio-btn.checked{border-color:var(--accent);background:rgba(0,229,160,0.1)}
+.radio-btn.checked::after{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent)}
 
-  /* CARD DETAILS (expandable) */
-  .card-details { border-top: 1px solid var(--border); overflow: hidden; max-height: 0; transition: max-height 0.35s cubic-bezier(.4,0,.2,1); }
-  .card-details.open { max-height: 500px; }
-  .details-inner { padding: 14px; }
-  .detail-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid var(--border); gap: 8px; }
-  .detail-row:last-child { border-bottom: none; }
-  .detail-key { font-size: 11px; color: var(--muted); flex-shrink: 0; }
-  .detail-val { font-size: 11px; color: var(--muted2); text-align: right; font-family: var(--mono); }
-  .detail-val.highlight { color: var(--accent); }
-  .detail-val.warn { color: var(--pending); }
+.option-info{flex:1;min-width:0}
+.option-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.3}
+.option-sub{font-size:11px;color:var(--muted2)}
+.option-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.opt-tag{font-size:9px;padding:2px 6px;border-radius:4px;font-family:var(--mono);font-weight:600}
+.opt-tag.green{background:rgba(0,196,122,0.1);color:var(--paid)}
+.opt-tag.amber{background:rgba(251,191,36,0.1);color:var(--pending)}
+.opt-tag.blue{background:rgba(96,165,250,0.1);color:var(--obs)}
+.opt-tag.purple{background:rgba(123,97,255,0.12);color:var(--accent2)}
+.opt-tag.gray{background:rgba(107,107,128,0.12);color:var(--muted2)}
 
-  .card-link {
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    margin-top: 12px; padding: 10px;
-    background: var(--surface2); border: 1px solid var(--border2);
-    border-radius: 10px; text-decoration: none;
-    color: var(--accent); font-size: 12px; font-weight: 600;
-    transition: background 0.2s;
-  }
-  .card-link:active { background: rgba(0,229,160,0.08); }
-  .card-link svg { width: 13px; height: 13px; }
+.option-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0}
+.opt-price-eur{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text)}
+.opt-price-brl{font-size:10px;color:var(--muted);font-family:var(--mono)}
+.opt-badge-paid{font-size:9px;font-family:var(--mono);color:var(--paid);font-weight:700}
 
-  /* ALERT CHIP */
-  .alert-chip {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 10px; padding: 4px 8px; border-radius: 6px;
-    margin-top: 6px;
-    background: rgba(251,191,36,0.1); color: var(--pending);
-    border: 1px solid rgba(251,191,36,0.2);
-  }
-  .alert-chip.info { background: rgba(96,165,250,0.1); color: var(--obs); border-color: rgba(96,165,250,0.2); }
-  .alert-chip.ok { background: rgba(0,196,122,0.1); color: var(--paid); border-color: rgba(0,196,122,0.2); }
+/* EXPAND DETAILS */
+.option-details{overflow:hidden;max-height:0;transition:max-height 0.3s cubic-bezier(.4,0,.2,1)}
+.option-details.open{max-height:600px}
+.details-inner{padding:0 14px 14px 42px}
+.detail-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);gap:8px}
+.detail-row:last-of-type{border-bottom:none}
+.dk{font-size:11px;color:var(--muted);flex-shrink:0}
+.dv{font-size:11px;color:var(--muted2);text-align:right;font-family:var(--mono)}
+.dv.hi{color:var(--accent)}
+.dv.warn{color:var(--pending)}
+.opt-link{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;padding:9px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;text-decoration:none;color:var(--accent);font-size:12px;font-weight:600}
+.opt-link svg{width:12px;height:12px}
+.expand-toggle{font-size:11px;color:var(--muted2);padding:4px 14px 8px 42px;cursor:pointer;display:flex;align-items:center;gap:4px}
+.expand-toggle:hover{color:var(--text)}
+.toggle-arrow{transition:transform 0.25s;display:inline-block}
+.toggle-arrow.open{transform:rotate(180deg)}
 
-  /* OBSERVATIONS TAB */
-  .obs-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 12px;
-  }
-  .obs-tag {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 10px; font-family: var(--mono); font-weight: 700;
-    padding: 3px 8px; border-radius: 4px; margin-bottom: 10px;
-    text-transform: uppercase; letter-spacing: 0.06em;
-  }
-  .obs-tag.gpu { background: rgba(123,97,255,0.15); color: var(--accent2); }
-  .obs-tag.mb { background: rgba(0,229,160,0.12); color: var(--accent); }
-  .obs-tag.mem { background: rgba(255,107,53,0.12); color: var(--accent3); }
-  .obs-tag.compat { background: rgba(251,191,36,0.12); color: var(--pending); }
-  .obs-tag.budget { background: rgba(96,165,250,0.12); color: var(--obs); }
-  .obs-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.4; }
-  .obs-body { font-size: 13px; color: var(--muted2); line-height: 1.6; }
-  .obs-body strong { color: var(--text); font-weight: 600; }
-  .obs-link {
-    display: inline-flex; align-items: center; gap: 5px;
-    margin-top: 12px; font-size: 12px; color: var(--accent);
-    text-decoration: none; font-weight: 500;
-    padding: 8px 12px; border-radius: 8px;
-    background: rgba(0,229,160,0.06); border: 1px solid rgba(0,229,160,0.15);
-  }
+/* COMPAT */
+.compat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.compat-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:11px 12px}
+.compat-item.ok{border-left:3px solid var(--paid)}
+.compat-item.warn{border-left:3px solid var(--pending)}
+.compat-item.action{border-left:3px solid var(--obs)}
+.ci-label{font-size:9px;font-family:var(--mono);color:var(--muted);margin-bottom:3px;letter-spacing:0.04em}
+.ci-val{font-size:12px;font-weight:500;color:var(--text);line-height:1.3}
+.ci-status{font-size:10px;margin-top:4px;font-family:var(--mono)}
+.ci-status.ok{color:var(--paid)}
+.ci-status.warn{color:var(--pending)}
+.ci-status.action{color:var(--obs)}
 
-  /* BOTTOM NAV */
-  .bottom-nav {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    background: rgba(10,10,15,0.95); backdrop-filter: blur(16px);
-    border-top: 1px solid var(--border);
-    display: flex; padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
-  }
-  .nav-btn {
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-    background: none; border: none; cursor: pointer;
-    padding: 4px 0;
-  }
-  .nav-icon { font-size: 20px; line-height: 1; }
-  .nav-label { font-size: 10px; font-family: var(--mono); color: var(--muted); transition: color 0.2s; }
-  .nav-btn.active .nav-label { color: var(--accent); }
-  .nav-btn.active .nav-icon { filter: drop-shadow(0 0 6px var(--accent)); }
+/* OBS */
+.obs-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:15px;margin-bottom:11px}
+.obs-tag{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-family:var(--mono);font-weight:700;padding:3px 8px;border-radius:4px;margin-bottom:9px;text-transform:uppercase;letter-spacing:0.06em}
+.obs-tag.gpu{background:rgba(123,97,255,0.15);color:var(--accent2)}
+.obs-tag.mb{background:rgba(0,229,160,0.12);color:var(--accent)}
+.obs-tag.mem{background:rgba(255,107,53,0.12);color:var(--accent3)}
+.obs-tag.compat{background:rgba(251,191,36,0.12);color:var(--pending)}
+.obs-tag.budget{background:rgba(96,165,250,0.12);color:var(--obs)}
+.obs-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:7px;line-height:1.4}
+.obs-body{font-size:13px;color:var(--muted2);line-height:1.6}
+.obs-body strong{color:var(--text);font-weight:600}
+.obs-link{display:inline-flex;align-items:center;gap:5px;margin-top:11px;font-size:12px;color:var(--accent);text-decoration:none;font-weight:500;padding:8px 12px;border-radius:8px;background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.15)}
 
-  /* SECTIONS */
-  .tab-section { display: none; }
-  .tab-section.active { display: block; }
-
-  /* COMPATIBILITY GRID */
-  .compat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-  .compat-item {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 12px 12px 10px;
-  }
-  .compat-item.ok { border-left: 3px solid var(--paid); }
-  .compat-item.warn { border-left: 3px solid var(--pending); }
-  .compat-item.action { border-left: 3px solid var(--obs); }
-  .ci-label { font-size: 10px; font-family: var(--mono); color: var(--muted); margin-bottom: 4px; }
-  .ci-val { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.3; }
-  .ci-status { font-size: 10px; margin-top: 5px; font-family: var(--mono); }
-  .ci-status.ok { color: var(--paid); }
-  .ci-status.warn { color: var(--pending); }
-  .ci-status.action { color: var(--obs); }
-
-  /* EXPAND ARROW */
-  .expand-arrow { color: var(--muted); font-size: 12px; transition: transform 0.3s; margin-left: 4px; }
-  .expand-arrow.rotated { transform: rotate(180deg); }
-
-  /* ANIMATE IN */
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-  .comp-card { animation: fadeUp 0.3s ease both; }
-  .comp-card:nth-child(1) { animation-delay: 0.02s; }
-  .comp-card:nth-child(2) { animation-delay: 0.05s; }
-  .comp-card:nth-child(3) { animation-delay: 0.08s; }
-  .comp-card:nth-child(4) { animation-delay: 0.11s; }
-  .comp-card:nth-child(5) { animation-delay: 0.14s; }
-  .comp-card:nth-child(6) { animation-delay: 0.17s; }
-  .comp-card:nth-child(7) { animation-delay: 0.20s; }
-  .comp-card:nth-child(8) { animation-delay: 0.23s; }
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.cat-block{animation:fadeUp 0.3s ease both}
+.cat-block:nth-child(1){animation-delay:0.02s}
+.cat-block:nth-child(2){animation-delay:0.05s}
+.cat-block:nth-child(3){animation-delay:0.08s}
+.cat-block:nth-child(4){animation-delay:0.11s}
+.cat-block:nth-child(5){animation-delay:0.14s}
+.cat-block:nth-child(6){animation-delay:0.17s}
+.cat-block:nth-child(7){animation-delay:0.20s}
+.cat-block:nth-child(8){animation-delay:0.23s}
 </style>
 </head>
 <body>
@@ -261,457 +166,706 @@
     <div class="logo">BUILD<span>/</span>TRACKER</div>
     <div class="badge-year">2026</div>
   </div>
+  <div class="budget-summary">
+    <div class="bsum-item">
+      <div class="bsum-label">TOTAL SELECIONADO</div>
+      <div class="bsum-val" id="totalBRL">R$ —</div>
+      <div class="bsum-sub" id="totalEUR">€ — × 5,80</div>
+    </div>
+    <div class="bsum-item">
+      <div class="bsum-label">TETO DO PROJETO</div>
+      <div class="bsum-val amber">R$ 10.000</div>
+      <div class="bsum-sub" id="budgetLeft">Calculando…</div>
+    </div>
+  </div>
   <div class="budget-bar-wrap">
-    <div class="budget-label">ORÇAMENTO</div>
+    <div class="budget-label">USO</div>
     <div class="budget-track"><div class="budget-fill" id="budgetFill" style="width:0%"></div></div>
     <div class="budget-pct" id="budgetPct">—</div>
   </div>
 </header>
 
-<div class="tabs" id="tabs">
-  <button class="tab-btn active" onclick="showTab('lista')">📋 Lista</button>
-  <button class="tab-btn" onclick="showTab('compat')">✅ Compat.</button>
-  <button class="tab-btn" onclick="showTab('obs')">📌 Observações</button>
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('lista',this)">📋 Lista</button>
+  <button class="tab-btn" onclick="showTab('compat',this)">✅ Compat.</button>
+  <button class="tab-btn" onclick="showTab('obs',this)">📌 Observações</button>
 </div>
 
 <main>
 
-<!-- ======= LISTA ======= -->
+<!-- ===== LISTA ===== -->
 <div id="tab-lista" class="tab-section active">
 
-  <div class="total-card">
-    <div class="total-item">
-      <div class="t-label">TOTAL LISTA (R$)</div>
-      <div class="t-val">R$ 11.726</div>
-      <div class="t-sub">Valor em lojas BR</div>
+<!-- CPU -->
+<div class="cat-block" id="cat-cpu">
+  <div class="cat-header">
+    <div class="cat-icon">🔲</div>
+    <div class="cat-info">
+      <div class="cat-type">Processador</div>
+      <div class="cat-selected-name" id="sel-name-cpu">Ryzen 7 7800X3D</div>
     </div>
-    <div class="total-item">
-      <div class="t-label">TOTAL EURO (€)</div>
-      <div class="t-val">€ 1.773</div>
-      <div class="t-sub">= R$ 10.283 (×5,80)</div>
-    </div>
-    <div class="total-divider"></div>
-    <div class="total-item">
-      <div class="t-label">JÁ PAGO (R$)</div>
-      <div class="t-val green">R$ 1.847</div>
-      <div class="t-sub">Processador — Kabum</div>
-    </div>
-    <div class="total-item">
-      <div class="t-label">TETO DO PROJETO</div>
-      <div class="t-val amber">R$ 10.000</div>
-      <div class="t-sub">~€ 1.724 restantes</div>
+    <div class="cat-right">
+      <div class="status-badge paid">PAGO</div>
+      <div class="cat-price-eur" id="sel-price-cpu">R$ 1.847</div>
     </div>
   </div>
-
-  <!-- CPU -->
-  <div class="comp-card status-paid" onclick="toggleCard(this)">
-    <div class="card-header">
-      <div class="card-icon">🔲</div>
-      <div class="card-info">
-        <div class="card-type">Processador</div>
-        <div class="card-name">Ryzen 7 7800X3D</div>
-        <div class="card-source">Kabum BR</div>
-        <div class="alert-chip ok">✓ Já comprado</div>
+  <div class="options-list">
+    <!-- Only one option for CPU -->
+    <div class="option-item selected" data-cat="cpu" data-eur="0" data-brl="1847" data-name="AMD Ryzen 7 7800X3D">
+      <div class="option-row" onclick="selectOption(this.parentElement); toggleDetails(this.parentElement)">
+        <div class="radio-wrap"><div class="radio-btn checked"></div></div>
+        <div class="option-info">
+          <div class="option-name">AMD Ryzen 7 7800X3D</div>
+          <div class="option-sub">Kabum BR — já comprado</div>
+          <div class="option-tags">
+            <span class="opt-tag green">AM5</span>
+            <span class="opt-tag green">Já pago</span>
+            <span class="opt-tag blue">Sweet spot: DDR5-6000</span>
+          </div>
+        </div>
+        <div class="option-right">
+          <div class="opt-badge-paid">✓ PAGO</div>
+          <div class="opt-price-eur">R$ 1.847</div>
+        </div>
       </div>
-      <div class="card-right">
-        <div class="status-dot paid">PAGO</div>
-        <div class="card-price">R$ 1.847</div>
-        <div class="expand-arrow">▼</div>
+      <div class="expand-toggle" onclick="toggleDetails(this.parentElement)">
+        <span class="toggle-arrow">▼</span> detalhes
       </div>
-    </div>
-    <div class="card-details">
-      <div class="details-inner">
-        <div class="detail-row"><span class="detail-key">Socket</span><span class="detail-val highlight">AM5</span></div>
-        <div class="detail-row"><span class="detail-key">TDP</span><span class="detail-val">120W (PPT pico)</span></div>
-        <div class="detail-row"><span class="detail-key">Infinity Fabric</span><span class="detail-val highlight">Sweet spot: DDR5-6000</span></div>
-        <div class="detail-row"><span class="detail-key">Cache 3D throttle</span><span class="detail-val warn">>89°C limita boost</span></div>
-        <div class="detail-row"><span class="detail-key">Preço pago</span><span class="detail-val highlight">R$ 1.847,12</span></div>
+      <div class="option-details">
+        <div class="details-inner">
+          <div class="detail-row"><span class="dk">Socket</span><span class="dv hi">AM5</span></div>
+          <div class="detail-row"><span class="dk">TDP</span><span class="dv">120W (PPT pico)</span></div>
+          <div class="detail-row"><span class="dk">Cache 3D</span><span class="dv warn">Throttle >89°C</span></div>
+          <div class="detail-row"><span class="dk">Infinity Fabric</span><span class="dv hi">Sweet spot DDR5-6000</span></div>
+          <div class="detail-row"><span class="dk">Preço pago</span><span class="dv hi">R$ 1.847,12</span></div>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <!-- GPU -->
-  <div class="comp-card status-pending" onclick="toggleCard(this)">
-    <div class="card-header">
-      <div class="card-icon">🎮</div>
-      <div class="card-info">
-        <div class="card-type">Placa de Vídeo</div>
-        <div class="card-name">ASUS Dual RX 9060 XT White</div>
-        <div class="card-source">Caseking — Alemanha</div>
-      </div>
-      <div class="card-right">
-        <div class="status-dot pending">PENDENTE</div>
-        <div class="card-price">€ 405</div>
-        <div class="card-price-sub">R$ 2.351</div>
-        <div class="expand-arrow">▼</div>
-      </div>
-    </div>
-    <div class="card-details">
-      <div class="details-inner">
-        <div class="detail-row"><span class="detail-key">Monitor alvo</span><span class="detail-val highlight">Dell U2724D 1440p 120Hz</span></div>
-        <div class="detail-row"><span class="detail-key">Target FPS</span><span class="detail-val highlight">120+ em QHD</span></div>
-        <div class="detail-row"><span class="detail-key">VRAM</span><span class="detail-val">16 GB GDDR6</span></div>
-        <div class="detail-row"><span class="detail-key">Interface</span><span class="detail-val">PCIe 5.0 x16</span></div>
-        <div class="detail-row"><span class="detail-key">TDP</span><span class="detail-val">~180W</span></div>
-        <div class="detail-row"><span class="detail-key">Valor BR</span><span class="detail-val">R$ 2.660</span></div>
-        <a class="card-link" href="https://www.caseking.de/en/asus-dual-radeon-rx-9060-xt-white-edition-16384-mb-gddr6/GCAS-701.html" target="_blank">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Ver na Caseking
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- MOBO -->
-  <div class="comp-card status-pending" onclick="toggleCard(this)">
-    <div class="card-header">
-      <div class="card-icon">🖥️</div>
-      <div class="card-info">
-        <div class="card-type">Placa-mãe</div>
-        <div class="card-name">Sapphire Pulse B850M WiFi</div>
-        <div class="card-source">Caseking — Alemanha</div>
-        <div class="alert-chip">⚠ Slot GPU: PCIe 4.0 (não 5.0)</div>
-      </div>
-      <div class="card-right">
-        <div class="status-dot pending">PENDENTE</div>
-        <div class="card-price">€ 127</div>
-        <div class="card-price-sub">R$ 735</div>
-        <div class="expand-arrow">▼</div>
-      </div>
-    </div>
-    <div class="card-details">
-      <div class="details-inner">
-        <div class="detail-row"><span class="detail-key">Chipset</span><span class="detail-val highlight">AMD B850</span></div>
-        <div class="detail-row"><span class="detail-key">Form factor</span><span class="detail-val">Micro-ATX (244×244mm)</span></div>
-        <div class="detail-row"><span class="detail-key">VRM</span><span class="detail-val">7+2+1 fases / 60A</span></div>
-        <div class="detail-row"><span class="detail-key">Slot GPU</span><span class="detail-val warn">PCIe 4.0 x16</span></div>
-        <div class="detail-row"><span class="detail-key">M.2 PCIe 5.0</span><span class="detail-val highlight">1× (storage)</span></div>
-        <div class="detail-row"><span class="detail-key">RAM max</span><span class="detail-val">DDR5-7600 OC</span></div>
-        <div class="detail-row"><span class="detail-key">WiFi</span><span class="detail-val">WiFi 6 (ax)</span></div>
-        <div class="detail-row"><span class="detail-key">EXPO</span><span class="detail-val warn">Ativar manualmente na BIOS</span></div>
-        <div class="detail-row"><span class="detail-key">Dual-channel slots</span><span class="detail-val highlight">A2+B2 (2ª e 4ª)</span></div>
-        <a class="card-link" href="https://www.caseking.de/en/sapphire-pulse-b850m-wifi-motherboard-socket-am5-amd-b850-matx-ddr5/MBSP-016.html" target="_blank">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Ver na Caseking
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- RAM -->
-  <div class="comp-card status-pending" onclick="toggleCard(this)">
-    <div class="card-header">
-      <div class="card-icon">💾</div>
-      <div class="card-info">
-        <div class="card-type">Memória RAM</div>
-        <div class="card-name">Patriot Viper Venom 32GB CL36</div>
-        <div class="card-source">Caseking — Alemanha</div>
-        <div class="alert-chip info">ℹ Ativar EXPO na BIOS</div>
-      </div>
-      <div class="card-right">
-        <div class="status-dot pending">PENDENTE</div>
-        <div class="card-price">€ 413</div>
-        <div class="card-price-sub">R$ 2.397</div>
-        <div class="expand-arrow">▼</div>
-      </div>
-    </div>
-    <div class="card-details">
-      <div class="details-inner">
-        <div class="detail-row"><span class="detail-key">Velocidade</span><span class="detail-val highlight">DDR5-6000 MT/s</span></div>
-        <div class="detail-row"><span class="detail-key">Latência</span><span class="detail-val">CL36</span></div>
-        <div class="detail-row"><span class="detail-key">Kit</span><span class="detail-val">2×16GB</span></div>
-        <div class="detail-row"><span class="detail-key">Perfis</span><span class="detail-val highlight">EXPO + XMP 3.0</span></div>
-        <div class="detail-row"><span class="detail-key">Por que 6000?</span><span class="detail-val highlight">Sweet spot IF 1:1</span></div>
-        <div class="detail-row"><span class="detail-key">Padrão sem EXPO</span><span class="detail-val warn">4800 MT/s (JEDEC)</span></div>
-        <a class="card-link" href="https://www.caseking.de/en/patriot-viper-venom-ddr5-6000-ram-cl36-xmp-3.0-and-expo-32gb-dual-kit-black/MEPM-088.html" target="_blank">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Ver na Caseking
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- SSD -->
-  <div class="comp-card status-pending" onclick="toggleCard(this)">
-    <div class="card-header">
-      <div class="card-icon">⚡</div>
-      <div class="card-info">
-        <div class="card-type">SSD NVMe</div>
-        <div class="card-name">Patriot Viper VP4300 Lite 2TB</div>
-        <div class="card-source">Caseking — Alemanha</div>
-      </div>
-      <div class="card-right">
-        <div class="status-dot pending">PENDENTE</div>
-        <div class="card-price">€ 238</div>
-        <div class="card-price-sub">R$ 1.380</div>
-        <div class="expand-arrow">▼</div>
-      </div>
-    </div>
-    <div class="card-details">
-      <div class="details-inner">
-        <div class="detail-row"><span class="detail-key">Interface</span><span class="detail-val highlight">PCIe 4.0 M.2 NVMe 2.0</span></div>
-        <div class="detail-row"><span class="detail-key">Leitura seq.</span><span class="detail-val highlight">7.400 MB/s</span></div>
-        <div class="detail-row"><span class="detail-key">Cache DRAM</span><span class="detail-val warn">DRAM-less (usa HMB)</span></div>
-        <div class="detail-row"><span class="detail-key">Para gaming</span><span class="detail-val highlight">HMB supre sem gargalo</span></div>
-        <div class="detail-row"><span class="detail-key">Rejeitados</span><span class="detail-val">P400 (PCIe 3.0), NV3</span></div>
-        <a class="card-link" href="https://www.caseking.de/en/patriot-viper-vp4300-lite-ssd-pcie-4.0-m.2-typ-2280-2tb/SSPM-029.html" target="_blank">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 12-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Ver na Caseking
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- AIO -->
-  <div class="comp-card status-pending" onclick="toggleCard(this)">
-    <div class="card-header">
-      <div class="card-icon">🌡️</div>
-      <div class="card-info">
-        <div class="card-type">Water Cooler</div>
-        <div class="card-name">ASUS TUF LC II 240 ARGB</div>
-        <div class="card-source">Caseking — Alemanha</div>
-        <div class="alert-chip">⚠ Verificar espaço no gabinete</div>
-      </div>
-      <div class="card-right">
-        <div class="status-dot pending">PENDENTE</div>
-        <div class="card-price">€ 102</div>
-        <div class="card-price-sub">R$ 594</div>
-        <div class="expand-arrow">▼</div>
-      </div>
-    </div>
-    <div class="card-details">
-      <div class="details-inner">
-        <div class="detail-row"><span class="detail-key">Radiador</span><span class="detail-val">240mm</span></div>
-        <div class="detail-row"><span class="detail-key">Socket AM5</span><span class="detail-val highlight">Compatível (com bracket)</span></div>
-        <div class="detail-row"><span class="detail-key">Instalação</span><span class="detail-val warn">Verificar teto/frontal do case</span></div>
-        <div class="detail-row"><span class="detail-key">Nota térmica</span><span class="detail-val warn">7800X3D: throttle >89°C</span></div>
-        <a class="card-link" href="https://www.caseking.de/en/asus-tuf-gaming-lc-ii-240-argb-aio-cooler-black/WASE-803.html" target="_blank">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Ver na Caseking
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- PSU -->
-  <div class="comp-card status-pending" onclick="toggleCard(this)">
-    <div class="card-header">
-      <div class="card-icon">🔌</div>
-      <div class="card-info">
-        <div class="card-type">Fonte (PSU)</div>
-        <div class="card-name">Cooler Master MWE Gold 850 V3</div>
-        <div class="card-source">A definir</div>
-      </div>
-      <div class="card-right">
-        <div class="status-dot pending">PENDENTE</div>
-        <div class="card-price">€ 88</div>
-        <div class="card-price-sub">R$ 510</div>
-        <div class="expand-arrow">▼</div>
-      </div>
-    </div>
-    <div class="card-details">
-      <div class="details-inner">
-        <div class="detail-row"><span class="detail-key">Potência</span><span class="detail-val highlight">850W</span></div>
-        <div class="detail-row"><span class="detail-key">Eficiência</span><span class="detail-val highlight">80+ Gold</span></div>
-        <div class="detail-row"><span class="detail-key">Carga atual</span><span class="detail-val">~360W (42%) — zona ideal</span></div>
-        <div class="detail-row"><span class="detail-key">Com RX 9070 XT</span><span class="detail-val highlight">~445W (52%) — ok</span></div>
-        <div class="detail-row"><span class="detail-key">Verificar</span><span class="detail-val warn">Conector GPU (8-pin/12VHPWR)</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CASE -->
-  <div class="comp-card status-missing" onclick="toggleCard(this)">
-    <div class="card-header">
-      <div class="card-icon">📦</div>
-      <div class="card-info">
-        <div class="card-type">Gabinete</div>
-        <div class="card-name">A definir</div>
-        <div class="card-source">—</div>
-        <div class="alert-chip">⚠ mATX · 240mm AIO · airflow</div>
-      </div>
-      <div class="card-right">
-        <div class="status-dot missing">FALTA</div>
-        <div class="card-price">—</div>
-        <div class="expand-arrow">▼</div>
-      </div>
-    </div>
-    <div class="card-details">
-      <div class="details-inner">
-        <div class="detail-row"><span class="detail-key">Form factor</span><span class="detail-val highlight">Micro-ATX (mínimo)</span></div>
-        <div class="detail-row"><span class="detail-key">AIO</span><span class="detail-val warn">Suporte 240mm (teto ou front)</span></div>
-        <div class="detail-row"><span class="detail-key">Airflow</span><span class="detail-val warn">Prioritário para 7800X3D</span></div>
-        <div class="detail-row"><span class="detail-key">Evitar</span><span class="detail-val">Vidro bloqueando frontal</span></div>
-        <div class="detail-row"><span class="detail-key">Refs.</span><span class="detail-val">Fractal Define 7 / Lancool 216</span></div>
-      </div>
-    </div>
-  </div>
-
-</div><!-- /tab-lista -->
-
-<!-- ======= COMPAT ======= -->
-<div id="tab-compat" class="tab-section">
-  <div class="section-header">
-    <div class="section-title">Mapa de Compatibilidade</div>
-    <div class="section-sub">Todos os pares verificados</div>
-  </div>
-
-  <div class="compat-grid">
-    <div class="compat-item ok">
-      <div class="ci-label">CPU ↔ Placa-mãe</div>
-      <div class="ci-val">AM5 ↔ AM5</div>
-      <div class="ci-status ok">✓ Compatível</div>
-    </div>
-    <div class="compat-item ok">
-      <div class="ci-label">CPU ↔ RAM</div>
-      <div class="ci-val">DDR5-6000 sweet spot IF</div>
-      <div class="ci-status ok">✓ Ideal</div>
-    </div>
-    <div class="compat-item action">
-      <div class="ci-label">Mobo ↔ RAM</div>
-      <div class="ci-val">EXPO off por padrão</div>
-      <div class="ci-status action">→ Ativar na BIOS</div>
-    </div>
-    <div class="compat-item ok">
-      <div class="ci-label">Mobo ↔ SSD</div>
-      <div class="ci-val">PCIe 4.0 M.2</div>
-      <div class="ci-status ok">✓ Slot disponível</div>
-    </div>
-    <div class="compat-item warn">
-      <div class="ci-label">Mobo ↔ GPU</div>
-      <div class="ci-val">GPU PCIe 5.0 → slot 4.0</div>
-      <div class="ci-status warn">⚠ Retrocompat. ok</div>
-    </div>
-    <div class="compat-item ok">
-      <div class="ci-label">AIO ↔ CPU</div>
-      <div class="ci-val">AM5 bracket incluso</div>
-      <div class="ci-status ok">✓ Compatível</div>
-    </div>
-    <div class="compat-item warn">
-      <div class="ci-label">AIO ↔ Gabinete</div>
-      <div class="ci-val">Radiador 240mm</div>
-      <div class="ci-status warn">⚠ Aguarda case</div>
-    </div>
-    <div class="compat-item action">
-      <div class="ci-label">PSU ↔ GPU</div>
-      <div class="ci-val">Conector GPU a confirmar</div>
-      <div class="ci-status action">→ Checar 8-pin/VHPWR</div>
-    </div>
-    <div class="compat-item warn">
-      <div class="ci-label">Gabinete ↔ Mobo</div>
-      <div class="ci-val">mATX requerido</div>
-      <div class="ci-status warn">⚠ Aguarda escolha</div>
-    </div>
-    <div class="compat-item action">
-      <div class="ci-label">RAM — Slots</div>
-      <div class="ci-val">Usar A2+B2</div>
-      <div class="ci-status action">→ Dual-channel correto</div>
-    </div>
-  </div>
-
-  <div class="obs-card">
-    <div class="obs-tag compat">⚡ PSU check</div>
-    <div class="obs-title">Consumo total estimado</div>
-    <div class="obs-body">
-      7800X3D (~120W) + RX 9060 XT (~180W) + resto (~60W) = <strong>~360W de pico</strong>.<br><br>
-      Fonte 850W Gold opera a <strong>42% de carga</strong> — zona de máxima eficiência.<br>
-      Com upgrade para RX 9070 XT (304W): ~445W = <strong>52%</strong> — ainda ideal, sem trocar a fonte.
     </div>
   </div>
 </div>
 
-<!-- ======= OBSERVAÇÕES ======= -->
+<!-- GPU -->
+<div class="cat-block" id="cat-gpu">
+  <div class="cat-header">
+    <div class="cat-icon">🎮</div>
+    <div class="cat-info">
+      <div class="cat-type">Placa de Vídeo</div>
+      <div class="cat-selected-name" id="sel-name-gpu">ASUS Dual RX 9060 XT White</div>
+    </div>
+    <div class="cat-right">
+      <div class="status-badge pending">PENDENTE</div>
+      <div class="cat-price-eur" id="sel-price-gpu">€ 405</div>
+      <div class="cat-price-brl" id="sel-brl-gpu">R$ 2.351</div>
+    </div>
+  </div>
+  <div class="options-list">
+
+    <div class="option-item selected" data-cat="gpu" data-eur="405.45" data-brl="2351" data-name="ASUS Dual RX 9060 XT White">
+      <div class="option-row" onclick="selectOption(this.parentElement); toggleDetails(this.parentElement)">
+        <div class="radio-wrap"><div class="radio-btn checked"></div></div>
+        <div class="option-info">
+          <div class="option-name">ASUS Dual RX 9060 XT White</div>
+          <div class="option-sub">Caseking — lista principal</div>
+          <div class="option-tags">
+            <span class="opt-tag green">1440p 120Hz ✓</span>
+            <span class="opt-tag blue">16GB GDDR6</span>
+            <span class="opt-tag amber">PCIe 5.0 → slot 4.0</span>
+          </div>
+        </div>
+        <div class="option-right">
+          <div class="opt-price-eur">€ 405</div>
+          <div class="opt-price-brl">R$ 2.351</div>
+        </div>
+      </div>
+      <div class="expand-toggle" onclick="toggleDetails(this.parentElement)"><span class="toggle-arrow">▼</span> detalhes</div>
+      <div class="option-details">
+        <div class="details-inner">
+          <div class="detail-row"><span class="dk">Monitor alvo</span><span class="dv hi">Dell U2724D 1440p 120Hz</span></div>
+          <div class="detail-row"><span class="dk">FPS esperado</span><span class="dv hi">120+ em QHD</span></div>
+          <div class="detail-row"><span class="dk">VRAM</span><span class="dv">16 GB GDDR6</span></div>
+          <div class="detail-row"><span class="dk">TDP</span><span class="dv">~180W</span></div>
+          <div class="detail-row"><span class="dk">Interface</span><span class="dv warn">PCIe 5.0 → roda em slot 4.0</span></div>
+          <a class="opt-link" href="https://www.caseking.de/en/asus-dual-radeon-rx-9060-xt-white-edition-16384-mb-gddr6/GCAS-701.html" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Ver na Caseking
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="option-item" data-cat="gpu" data-eur="550" data-brl="3190" data-name="AMD Radeon RX 9070 16GB">
+      <div class="option-row" onclick="selectOption(this.parentElement); toggleDetails(this.parentElement)">
+        <div class="radio-wrap"><div class="radio-btn"></div></div>
+        <div class="option-info">
+          <div class="option-name">AMD Radeon RX 9070 16GB</div>
+          <div class="option-sub">Alternativa — meio-termo</div>
+          <div class="option-tags">
+            <span class="opt-tag green">1440p ultra</span>
+            <span class="opt-tag blue">16GB GDDR6</span>
+            <span class="opt-tag purple">PCIe 5.0</span>
+          </div>
+        </div>
+        <div class="option-right">
+          <div class="opt-price-eur">€ 550</div>
+          <div class="opt-price-brl">R$ 3.190</div>
+        </div>
+      </div>
+      <div class="expand-toggle" onclick="toggleDetails(this.parentElement)"><span class="toggle-arrow">▼</span> detalhes</div>
+      <div class="option-details">
+        <div class="details-inner">
+          <div class="detail-row"><span class="dk">CUs</span><span class="dv">56 (vs 64 da XT)</span></div>
+          <div class="detail-row"><span class="dk">TBP</span><span class="dv hi">220W</span></div>
+          <div class="detail-row"><span class="dk">Interface</span><span class="dv hi">PCIe 5.0 x16</span></div>
+          <div class="detail-row"><span class="dk">Boost clock</span><span class="dv">2520 MHz</span></div>
+          <div class="detail-row"><span class="dk">Perfil</span><span class="dv">1440p ultra / 4K leve</span></div>
+          <div class="detail-row"><span class="dk">Delta vs 9060 XT</span><span class="dv warn">+€ ~145</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="option-item" data-cat="gpu" data-eur="690" data-brl="4002" data-name="AMD Radeon RX 9070 XT 16GB">
+      <div class="option-row" onclick="selectOption(this.parentElement); toggleDetails(this.parentElement)">
+        <div class="radio-wrap"><div class="radio-btn"></div></div>
+        <div class="option-info">
+          <div class="option-name">AMD Radeon RX 9070 XT 16GB</div>
+          <div class="option-sub">Upgrade 4K — obs. do projeto</div>
+          <div class="option-tags">
+            <span class="opt-tag green">4K ready</span>
+            <span class="opt-tag blue">16GB GDDR6</span>
+            <span class="opt-tag purple">PCIe 5.0 nativa</span>
+          </div>
+        </div>
+        <div class="option-right">
+          <div class="opt-price-eur">€ 690</div>
+          <div class="opt-price-brl">R$ 4.002</div>
+        </div>
+      </div>
+      <div class="expand-toggle" onclick="toggleDetails(this.parentElement)"><span class="toggle-arrow">▼</span> detalhes</div>
+      <div class="option-details">
+        <div class="details-inner">
+          <div class="detail-row"><span class="dk">CUs</span><span class="dv hi">64 (full Navi 48)</span></div>
+          <div class="detail-row"><span class="dk">TBP</span><span class="dv warn">304W — fonte 850W ok</span></div>
+          <div class="detail-row"><span class="dk">Interface</span><span class="dv hi">PCIe 5.0 x16 nativa</span></div>
+          <div class="detail-row"><span class="dk">Boost clock</span><span class="dv hi">2970 MHz</span></div>
+          <div class="detail-row"><span class="dk">Perfil</span><span class="dv hi">4K gaming</span></div>
+          <div class="detail-row"><span class="dk">Delta vs 9060 XT</span><span class="dv warn">+€ ~285</span></div>
+          <div class="detail-row"><span class="dk">Recomendado com</span><span class="dv warn">Monitor 4K</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MOBO -->
+<div class="cat-block" id="cat-mobo">
+  <div class="cat-header">
+    <div class="cat-icon">🖥️</div>
+    <div class="cat-info">
+      <div class="cat-type">Placa-mãe</div>
+      <div class="cat-selected-name" id="sel-name-mobo">Sapphire Pulse B850M WiFi</div>
+    </div>
+    <div class="cat-right">
+      <div class="status-badge pending">PENDENTE</div>
+      <div class="cat-price-eur" id="sel-price-mobo">€ 127</div>
+      <div class="cat-price-brl" id="sel-brl-mobo">R$ 735</div>
+    </div>
+  </div>
+  <div class="options-list">
+
+    <div class="option-item selected" data-cat="mobo" data-eur="126.79" data-brl="735" data-name="Sapphire Pulse B850M WiFi">
+      <div class="option-row" onclick="selectOption(this.parentElement); toggleDetails(this.parentElement)">
+        <div class="radio-wrap"><div class="radio-btn checked"></div></div>
+        <div class="option-info">
+          <div class="option-name">Sapphire Pulse B850M WiFi</div>
+          <div class="option-sub">Caseking — lista principal</div>
+          <div class="option-tags">
+            <span class="opt-tag blue">B850 · mATX</span>
+            <span class="opt-tag amber">GPU: PCIe 4.0</span>
+            <span class="opt-tag gray">7+2+1 fases 60A</span>
+          </div>
+        </div>
+        <div class="option-right">
+          <div class="opt-price-eur">€ 127</div>
+          <div class="opt-price-brl">R$ 735</div>
+        </div>
+      </div>
+      <div class="expand-toggle" onclick="toggleDetails(this.parentElement)"><span class="toggle-arrow">▼</span> detalhes</div>
+      <div class="option-details">
+        <div class="details-inner">
+          <div class="detail-row"><span class="dk">Chipset</span><span class="dv hi">AMD B850</span></div>
+          <div class="detail-row"><span class="dk">Form factor</span><span class="dv">Micro-ATX (244×244mm)</span></div>
+          <div class="detail-row"><span class="dk">VRM</span><span class="dv warn">7+2+1 fases / 60A</span></div>
+          <div class="detail-row"><span class="dk">Slot GPU</span><span class="dv warn">PCIe 4.0 x16</span></div>
+          <div class="detail-row"><span class="dk">M.2 PCIe 5.0</span><span class="dv hi">1× slot (storage)</span></div>
+          <div class="detail-row"><span class="dk">RAM máx OC</span><span class="dv">DDR5-7600</span></div>
+          <div class="detail-row"><span class="dk">WiFi</span><span class="dv">WiFi 6 (ax)</span></div>
+          <div class="detail-row"><span class="dk">EXPO</span><span class="dv warn">Ativar manualmente na BIOS</span></div>
+          <a class="opt-link" href="https://www.caseking.de/en/sapphire-pulse-b850m-wifi-motherboard-socket-am5-amd-b850-matx-ddr5/MBSP-016.html" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Ver na Caseking
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="option-item" data-cat="mobo" data-eur="265" data-brl="1537" data-name="Gigabyte X870E AORUS Elite WiFi7">
+      <div class="option-row" onclick="selectOption(this.parentElement); toggleDetails(this.parentElement)">
+        <div class="radio-wrap"><div class="radio-btn"></div></div>
+        <div class="option-info">
+          <div class="option-name">Gigabyte X870E AORUS Elite WiFi7</div>
+          <div class="option-sub">Caseking — upgrade recomendado</div>
+          <div class="option-tags">
+            <span class="opt-tag green">X870E · ATX</span>
+            <span class="opt-tag green">GPU: PCIe 5.0</span>
+            <span class="opt-tag purple">16+2+2 fases 80A</span>
+          </div>
+        </div>
+        <div class="option-right">
+          <div class="opt-price-eur">€ 265</div>
+          <div class="opt-price-brl">R$ 1.537</div>
+        </div>
+      </div>
+      <div class="expand-toggle" onclick="toggleDetails(this.parentElement)"><span class="toggle-arrow">▼</span> detalhes</div>
+      <div class="option-details">
+        <div class="details-inner">
+          <div class="detail-row"><span class="dk">Chipset</span><span class="dv hi">AMD X870E</span></div>
+          <div class="detail-row"><span class="dk">Form factor</span><span class="dv hi">ATX (305×244mm)</span></div>
+          <div class="detail-row"><span class="dk">VRM</span><span class="dv hi">16+2+2 fases / 80A</span></div>
+          <div class="detail-row"><span class="dk">Slot GPU</span><span class="dv hi">PCIe 5.0 x16 (CPU direto)</span></div>
+          <div class="detail-row"><span class="dk">M.2</span><span class="dv hi">4× (3× PCIe 5.0 + 1× 4.0)</span></div>
+          <div class="detail-row"><span class="dk">USB4</span><span class="dv hi">2× 40Gbps</span></div>
+          <div class="detail-row"><span class="dk">WiFi</span><span class="dv hi">WiFi 7</span></div>
+          <div class="detail-row"><span class="dk">Delta vs B850M</span><span class="dv warn">+€ ~138</span></div>
+          <div class="detail-row"><span class="dk">Atenção</span><span class="dv warn">Requer gabinete ATX</span></div>
+          <a class="opt-link" href="https://www.caseking.de/en/gigabyte-x870e-a-elite-wifi7-motherboard-socket-am5-amd-x870e-atx-ddr5/MBGB-619.html" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Ver na Caseking
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- RAM -->
+<div class="cat-block" id="cat-ram">
+  <div class="cat-header">
+    <div class="cat-icon">💾</div>
+    <div class="cat-info">
+      <div class="cat-type">Memória RAM</div>
+      <div class="cat-selected-name" id="sel-name-ram">Patriot Viper Venom 32GB CL36</div>
+    </div>
+    <div class="cat-right">
+      <div class="status-badge pending">PENDENTE</div>
+      <div class="cat-price-eur" id="sel-price-ram">€ 413</div>
+      <div class="cat-price-brl" id="sel-brl-ram">R$ 2.397</div>
+    </div>
+  </div>
+  <div class="options-list">
+
+    <div class="option-item selected" data-cat="ram" data-eur="413.34" data-brl="2397" data-name="Patriot Viper Venom 32GB DDR5-6000 CL36">
+      <div class="option-row" onclick="selectOption(this.parentElement); toggleDetails(this.parentElement)">
+        <div class="radio-wrap"><div class="radio-btn checked"></div></div>
+        <div class="option-info">
+          <div class="option-name">Patriot Viper Venom 32GB CL36</div>
+          <div class="option-sub">Caseking — lista principal</div>
+          <div class="option-tags">
+            <span class="opt-tag green">DDR5-6000</span>
+            <span class="opt-tag green">Sweet spot IF</span>
+            <span class="opt-tag blue">EXPO + XMP 3.0</span>
+          </div>
+        </div>
+        <div class="option-right">
+          <div class="opt-price-eur">€ 413</div>
+          <div class="opt-price-brl">R$ 2.397</div>
+        </div>
+      </div>
+      <div class="expand-toggle" onclick="toggleDetails(this.parentElement)"><span class="toggle-arrow">▼</span> detalhes</div>
+      <div class="option-details">
+        <div class="details-inner">
+          <div class="detail-row"><span class="dk">Velocidade</span><span class="dv hi">DDR5-6000 MT/s</span></div>
+          <div class="detail-row"><span class="dk">Latência</span><span class="dv">CL36</span></div>
+          <div class="detail-row"><span class="dk">Kit</span><span class="dv">2×16GB</span></div>
+          <div class="detail-row"><span class="dk">Padrão sem EXPO</span><span class="dv warn">4800 MT/s (JEDEC)</span></div>
+          <div class="detail-row"><span class="dk">Slots</span><span class="dv warn">Usar A2+B2 para dual-ch</span></div>
+          <a class="opt-link" href="https://www.caseking.de/en/patriot-viper-venom-ddr5-6000-ram-cl36-xmp-3.0-and-expo-32gb-dual-kit-black/MEPM-088.html" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Ver na Caseking
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SSD -->
+<div class="cat-block" id="cat-ssd">
+  <div class="cat-header">
+    <div class="cat-icon">⚡</div>
+    <div class="cat-info">
+      <div class="cat-type">SSD NVMe</div>
+      <div class="cat-selected-name" id="sel-name-ssd">Patriot Viper VP4300 Lite 2TB</div>
+    </div>
+    <div class="cat-right">
+      <div class="status-badge pending">PENDENTE</div>
+      <div class="cat-price-eur" id="sel-price-ssd">€ 238</div>
+      <div class="cat-price-brl" id="sel-brl-ssd">R$ 1.380</div>
+    </div>
+  </div>
+  <div class="options-list">
+
+    <div class="option-item selected" data-cat="ssd" data-eur="238" data-brl="1380" data-name="Patriot Viper VP4300 Lite 2TB">
+      <div class="option-row" onclick="selectOption(this.parentElement); toggleDetails(this.parentElement)">
+        <div class="radio-wrap"><div class="radio-btn checked"></div></div>
+        <div class="option-info">
+          <div class="option-name">Patriot Viper VP4300 Lite 2TB</div>
+          <div class="option-sub">Caseking — lista principal</div>
+          <div class="option-tags">
+            <span class="opt-tag green">7.400 MB/s</span>
+            <span class="opt-tag blue">PCIe 4.0</span>
+            <span class="opt-tag gray">DRAM-less / HMB</span>
+          </div>
+        </div>
+        <div class="option-right">
+          <div class="opt-price-eur">€ 238</div>
+          <div class="opt-price-brl">R$ 1.380</div>
+        </div>
+      </div>
+      <div class="expand-toggle" onclick="toggleDetails(this.parentElement)"><span class="toggle-arrow">▼</span> detalhes</div>
+      <div class="option-details">
+        <div class="details-inner">
+          <div class="detail-row"><span class="dk">Interface</span><span class="dv hi">PCIe 4.0 M.2 NVMe 2.0</span></div>
+          <div class="detail-row"><span class="dk">Leitura seq.</span><span class="dv hi">7.400 MB/s</span></div>
+          <div class="detail-row"><span class="dk">Cache DRAM</span><span class="dv warn">Não — usa HMB</span></div>
+          <div class="detail-row"><span class="dk">Para gaming</span><span class="dv hi">HMB supre sem gargalo</span></div>
+          <div class="detail-row"><span class="dk">Rejeitados</span><span class="dv">P400 (PCIe 3.0), NV3</span></div>
+          <a class="opt-link" href="https://www.caseking.de/en/patriot-viper-vp4300-lite-ssd-pcie-4.0-m.2-typ-2280-2tb/SSPM-029.html" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Ver na Caseking
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- AIO -->
+<div class="cat-block" id="cat-aio">
+  <div class="cat-header">
+    <div class="cat-icon">🌡️</div>
+    <div class="cat-info">
+      <div class="cat-type">Water Cooler</div>
+      <div class="cat-selected-name" id="sel-name-aio">ASUS TUF LC II 240 ARGB</div>
+    </div>
+    <div class="cat-right">
+      <div class="status-badge pending">PENDENTE</div>
+      <div class="cat-price-eur" id="sel-price-aio">€ 102</div>
+      <div class="cat-price-brl" id="sel-brl-aio">R$ 594</div>
+    </div>
+  </div>
+  <div class="options-list">
+
+    <div class="option-item selected" data-cat="aio" data-eur="102.33" data-brl="594" data-name="ASUS TUF LC II 240 ARGB">
+      <div class="option-row" onclick="selectOption(this.parentElement); toggleDetails(this.parentElement)">
+        <div class="radio-wrap"><div class="radio-btn checked"></div></div>
+        <div class="option-info">
+          <div class="option-name">ASUS TUF LC II 240 ARGB</div>
+          <div class="option-sub">Caseking — lista principal</div>
+          <div class="option-tags">
+            <span class="opt-tag blue">240mm</span>
+            <span class="opt-tag green">AM5 compat.</span>
+            <span class="opt-tag amber">Verificar espaço no case</span>
+          </div>
+        </div>
+        <div class="option-right">
+          <div class="opt-price-eur">€ 102</div>
+          <div class="opt-price-brl">R$ 594</div>
+        </div>
+      </div>
+      <div class="expand-toggle" onclick="toggleDetails(this.parentElement)"><span class="toggle-arrow">▼</span> detalhes</div>
+      <div class="option-details">
+        <div class="details-inner">
+          <div class="detail-row"><span class="dk">Radiador</span><span class="dv">240mm</span></div>
+          <div class="detail-row"><span class="dk">Socket AM5</span><span class="dv hi">Compatível (bracket incluso)</span></div>
+          <div class="detail-row"><span class="dk">Instalação</span><span class="dv warn">Confirmar teto/frontal do case</span></div>
+          <div class="detail-row"><span class="dk">Nota</span><span class="dv warn">7800X3D throttle >89°C</span></div>
+          <a class="opt-link" href="https://www.caseking.de/en/asus-tuf-gaming-lc-ii-240-argb-aio-cooler-black/WASE-803.html" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Ver na Caseking
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="option-item" data-cat="aio" data-eur="130" data-brl="754" data-name="ASUS TUF LC II 280 ARGB">
+      <div class="option-row" onclick="selectOption(this.parentElement); toggleDetails(this.parentElement)">
+        <div class="radio-wrap"><div class="radio-btn"></div></div>
+        <div class="option-info">
+          <div class="option-name">ASUS TUF LC II 280 ARGB</div>
+          <div class="option-sub">Upgrade recomendado para 7800X3D</div>
+          <div class="option-tags">
+            <span class="opt-tag green">280mm</span>
+            <span class="opt-tag green">5–8°C a menos</span>
+            <span class="opt-tag purple">Melhor boost sustentado</span>
+          </div>
+        </div>
+        <div class="option-right">
+          <div class="opt-price-eur">€ 130</div>
+          <div class="opt-price-brl">R$ 754</div>
+        </div>
+      </div>
+      <div class="expand-toggle" onclick="toggleDetails(this.parentElement)"><span class="toggle-arrow">▼</span> detalhes</div>
+      <div class="option-details">
+        <div class="details-inner">
+          <div class="detail-row"><span class="dk">Radiador</span><span class="dv hi">280mm</span></div>
+          <div class="detail-row"><span class="dk">Delta vs 240mm</span><span class="dv hi">+~€ 28 / 5–8°C a menos</span></div>
+          <div class="detail-row"><span class="dk">Impacto</span><span class="dv hi">Maior boost sustentado no X3D</span></div>
+          <div class="detail-row"><span class="dk">Atenção</span><span class="dv warn">Verificar suporte 280mm no case</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PSU -->
+<div class="cat-block" id="cat-psu">
+  <div class="cat-header">
+    <div class="cat-icon">🔌</div>
+    <div class="cat-info">
+      <div class="cat-type">Fonte (PSU)</div>
+      <div class="cat-selected-name" id="sel-name-psu">Cooler Master MWE Gold 850 V3</div>
+    </div>
+    <div class="cat-right">
+      <div class="status-badge pending">PENDENTE</div>
+      <div class="cat-price-eur" id="sel-price-psu">€ 88</div>
+      <div class="cat-price-brl" id="sel-brl-psu">R$ 510</div>
+    </div>
+  </div>
+  <div class="options-list">
+    <div class="option-item selected" data-cat="psu" data-eur="88" data-brl="510" data-name="Cooler Master MWE Gold 850W V3">
+      <div class="option-row" onclick="selectOption(this.parentElement); toggleDetails(this.parentElement)">
+        <div class="radio-wrap"><div class="radio-btn checked"></div></div>
+        <div class="option-info">
+          <div class="option-name">Cooler Master MWE Gold 850W V3</div>
+          <div class="option-sub">A definir — lista principal</div>
+          <div class="option-tags">
+            <span class="opt-tag green">850W</span>
+            <span class="opt-tag green">80+ Gold</span>
+            <span class="opt-tag blue">Suporta 9070 XT futuro</span>
+          </div>
+        </div>
+        <div class="option-right">
+          <div class="opt-price-eur">€ 88</div>
+          <div class="opt-price-brl">R$ 510</div>
+        </div>
+      </div>
+      <div class="expand-toggle" onclick="toggleDetails(this.parentElement)"><span class="toggle-arrow">▼</span> detalhes</div>
+      <div class="option-details">
+        <div class="details-inner">
+          <div class="detail-row"><span class="dk">Carga atual (9060 XT)</span><span class="dv hi">~360W = 42%</span></div>
+          <div class="detail-row"><span class="dk">Com 9070 XT (304W)</span><span class="dv hi">~445W = 52%</span></div>
+          <div class="detail-row"><span class="dk">Eficiência</span><span class="dv hi">Zona Gold ideal 40–80%</span></div>
+          <div class="detail-row"><span class="dk">Verificar</span><span class="dv warn">Conector GPU (8-pin/VHPWR)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE -->
+<div class="cat-block" id="cat-case">
+  <div class="cat-header">
+    <div class="cat-icon">📦</div>
+    <div class="cat-info">
+      <div class="cat-type">Gabinete</div>
+      <div class="cat-selected-name" id="sel-name-case">A definir</div>
+    </div>
+    <div class="cat-right">
+      <div class="status-badge missing">FALTA</div>
+      <div class="cat-price-eur" id="sel-price-case">—</div>
+    </div>
+  </div>
+  <div class="options-list">
+    <div class="option-item selected" data-cat="case" data-eur="0" data-brl="0" data-name="A definir">
+      <div class="option-row" onclick="selectOption(this.parentElement); toggleDetails(this.parentElement)">
+        <div class="radio-wrap"><div class="radio-btn checked"></div></div>
+        <div class="option-info">
+          <div class="option-name">A definir</div>
+          <div class="option-sub">Não incluído no orçamento ainda</div>
+          <div class="option-tags">
+            <span class="opt-tag amber">mATX mínimo</span>
+            <span class="opt-tag amber">240mm AIO</span>
+            <span class="opt-tag amber">Airflow prioritário</span>
+          </div>
+        </div>
+        <div class="option-right">
+          <div class="opt-price-eur">—</div>
+        </div>
+      </div>
+      <div class="expand-toggle" onclick="toggleDetails(this.parentElement)"><span class="toggle-arrow">▼</span> detalhes</div>
+      <div class="option-details">
+        <div class="details-inner">
+          <div class="detail-row"><span class="dk">Form factor</span><span class="dv hi">mATX (mínimo)</span></div>
+          <div class="detail-row"><span class="dk">AIO</span><span class="dv warn">Suporte 240mm (teto/frontal)</span></div>
+          <div class="detail-row"><span class="dk">Airflow</span><span class="dv warn">Crítico para 7800X3D</span></div>
+          <div class="detail-row"><span class="dk">Evitar</span><span class="dv">Vidro bloqueando frontal</span></div>
+          <div class="detail-row"><span class="dk">Refs.</span><span class="dv">Fractal Define 7 / Lancool 216</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /tab-lista -->
+
+<!-- ===== COMPAT ===== -->
+<div id="tab-compat" class="tab-section">
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px">Mapa de compatibilidade</div>
+  <div class="compat-grid">
+    <div class="compat-item ok"><div class="ci-label">CPU ↔ Mobo</div><div class="ci-val">AM5 ↔ AM5</div><div class="ci-status ok">✓ Compatível</div></div>
+    <div class="compat-item ok"><div class="ci-label">CPU ↔ RAM</div><div class="ci-val">DDR5-6000 sweet spot IF</div><div class="ci-status ok">✓ Ideal</div></div>
+    <div class="compat-item action"><div class="ci-label">Mobo ↔ RAM</div><div class="ci-val">EXPO off por padrão</div><div class="ci-status action">→ Ativar na BIOS</div></div>
+    <div class="compat-item ok"><div class="ci-label">Mobo ↔ SSD</div><div class="ci-val">PCIe 4.0 M.2</div><div class="ci-status ok">✓ Slot disponível</div></div>
+    <div class="compat-item warn"><div class="ci-label">Mobo ↔ GPU</div><div class="ci-val">GPU PCIe 5.0 → slot 4.0</div><div class="ci-status warn">⚠ Retrocompat. ok</div></div>
+    <div class="compat-item ok"><div class="ci-label">AIO ↔ CPU</div><div class="ci-val">AM5 bracket incluso</div><div class="ci-status ok">✓ Compatível</div></div>
+    <div class="compat-item warn"><div class="ci-label">AIO ↔ Gabinete</div><div class="ci-val">Radiador 240mm</div><div class="ci-status warn">⚠ Aguarda case</div></div>
+    <div class="compat-item action"><div class="ci-label">PSU ↔ GPU</div><div class="ci-val">Conector a confirmar</div><div class="ci-status action">→ Checar 8-pin/VHPWR</div></div>
+    <div class="compat-item warn"><div class="ci-label">Gabinete ↔ Mobo</div><div class="ci-val">mATX requerido</div><div class="ci-status warn">⚠ Aguarda escolha</div></div>
+    <div class="compat-item action"><div class="ci-label">RAM — Slots</div><div class="ci-val">Usar A2+B2</div><div class="ci-status action">→ Dual-channel</div></div>
+  </div>
+  <div class="obs-card">
+    <div class="obs-tag compat">⚡ PSU</div>
+    <div class="obs-title">Consumo total estimado</div>
+    <div class="obs-body">7800X3D (~120W) + RX 9060 XT (~180W) + resto (~60W) = <strong>~360W de pico</strong>.<br><br>Fonte 850W Gold a <strong>42% de carga</strong> — zona ideal de eficiência.<br>Com RX 9070 XT (304W): ~445W = <strong>52%</strong> — ainda perfeito, sem trocar a fonte.</div>
+  </div>
+</div>
+
+<!-- ===== OBS ===== -->
 <div id="tab-obs" class="tab-section">
-  <div class="section-header">
-    <div class="section-title">Observações do Projeto</div>
-    <div class="section-sub">Alternativas e alertas documentados</div>
+  <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px">Observações do projeto</div>
+
+  <div class="obs-card">
+    <div class="obs-tag gpu">🎮 GPU</div>
+    <div class="obs-title">RX 9070 XT — upgrade se trocar para 4K</div>
+    <div class="obs-body">Custo estimado <strong>~€ 690</strong> (+€ 285 vs 9060 XT). Fonte 850W e Ryzen 7 7800X3D já suportam sem alterar outras peças. TBP: <strong>304W</strong> · PCIe 5.0 x16 nativa.</div>
   </div>
 
   <div class="obs-card">
-    <div class="obs-tag gpu">🎮 GPU Upgrade</div>
-    <div class="obs-title">Alternativa: Radeon RX 9070 XT 16GB</div>
-    <div class="obs-body">
-      Recomendação de upgrade caso haja troca do monitor para <strong>4K</strong>. Custo estimado de <strong>~€ 690</strong> (≈ +€ 285 vs RX 9060 XT).<br><br>
-      A fonte 850W e o Ryzen 7 7800X3D <strong>já suportam esse upgrade</strong> sem alterar outras peças.<br><br>
-      TBP: <strong>304W</strong> · Interface: <strong>PCIe 5.0 x16 nativa</strong>
-    </div>
-  </div>
-
-  <div class="obs-card">
-    <div class="obs-tag mb">🖥️ Mobo Upgrade</div>
-    <div class="obs-title">Alternativa: Gigabyte X870E AORUS Elite WiFi7</div>
-    <div class="obs-body">
-      Substituta recomendada para a Sapphire B850M. Delta de <strong>~€ 138–153</strong> a mais.<br><br>
-      <strong>Vantagens chave:</strong><br>
-      · Slot GPU <strong>PCIe 5.0 x16</strong> (a B850M tem PCIe 4.0)<br>
-      · VRM 16+2+2 a 80A (vs 7+2+1 a 60A)<br>
-      · 4× M.2 sendo 3× PCIe 5.0<br>
-      · ATX — mais opções de gabinete<br>
-      · 2× USB4 40Gbps<br><br>
-      Importante: requer <strong>gabinete ATX</strong>.
-    </div>
+    <div class="obs-tag mb">🖥️ Mobo</div>
+    <div class="obs-title">X870E — upgrade recomendado da placa-mãe</div>
+    <div class="obs-body">Delta de <strong>~€ 138</strong> vs B850M. Entrega slot GPU PCIe 5.0 x16, VRM 16+2+2/80A, 3× M.2 PCIe 5.0, WiFi 7, USB4 40Gbps. Requer <strong>gabinete ATX</strong>.</div>
     <a class="obs-link" href="https://www.caseking.de/en/gigabyte-x870e-a-elite-wifi7-motherboard-socket-am5-amd-x870e-atx-ddr5/MBGB-619.html" target="_blank">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
       Ver na Caseking
     </a>
   </div>
 
   <div class="obs-card">
-    <div class="obs-tag mem">⚠️ Ação necessária</div>
+    <div class="obs-tag mem">⚠️ Ação</div>
     <div class="obs-title">EXPO: ativar na BIOS após montagem</div>
-    <div class="obs-body">
-      A RAM opera em <strong>4800 MT/s por padrão (JEDEC)</strong>. Para atingir os 6000 MT/s pagos, é necessário entrar na BIOS e ativar o perfil <strong>EXPO</strong> manualmente na primeira inicialização.<br><br>
-      Sem isso: paga por 6000, usa 4800 — perda real de latência e desempenho.
-    </div>
+    <div class="obs-body">RAM opera em <strong>4800 MT/s por padrão (JEDEC)</strong>. Ativar perfil <strong>EXPO</strong> manualmente na primeira inicialização para atingir os 6000 MT/s pagos.</div>
   </div>
 
   <div class="obs-card">
     <div class="obs-tag budget">💰 Orçamento</div>
     <div class="obs-title">Como interpretar o teto de R$ 10.000</div>
-    <div class="obs-body">
-      CPU já pago no BR: <strong>R$ 1.847</strong><br>
-      Peças europeias: <strong>€ 1.374 × 5,80 = R$ 7.969</strong><br>
-      <strong>Total real: ~R$ 9.816</strong> — dentro do teto.<br><br>
-      A coluna "Valor (R$)" (R$ 11.726) soma preços BR que <strong>não refletem</strong> o que você pagará comprando na Europa.
-    </div>
+    <div class="obs-body">CPU pago BR: <strong>R$ 1.847</strong> + peças europeias <strong>€ 1.374 × 5,80 = R$ 7.969</strong> = <strong>~R$ 9.816 total real</strong> — dentro do teto.<br><br>Use o seletor na aba Lista para ver o impacto de cada alternativa no orçamento em tempo real.</div>
   </div>
 
   <div class="obs-card">
     <div class="obs-tag compat">🌡️ Térmica</div>
-    <div class="obs-title">7800X3D e temperatura — ponto crítico</div>
-    <div class="obs-body">
-      O cache 3D limita o boost acima de <strong>89°C</strong>. Temperatura mais baixa = boost mais consistente.<br><br>
-      O AIO 240mm é adequado. Upgrade para <strong>280mm</strong> (+R$ ~150) dá 5–8°C a menos e é o maior impacto por real gasto nessa build específica.
-    </div>
+    <div class="obs-title">7800X3D — temperatura é crítica</div>
+    <div class="obs-body">Cache 3D throttle acima de <strong>89°C</strong>. AIO 240mm é adequado. Upgrade para <strong>280mm</strong> (+~€ 28) dá 5–8°C a menos — maior impacto por real nessa build.</div>
   </div>
-
-</div><!-- /tab-obs -->
+</div>
 
 </main>
 
 <script>
-function showTab(name) {
+const EUR_BRL = 5.80;
+const TETO = 10000;
+const CPU_PAID = 1847;
+
+function selectOption(item) {
+  const cat = item.dataset.cat;
+  document.querySelectorAll(`.option-item[data-cat="${cat}"]`).forEach(el => {
+    el.classList.remove('selected');
+    el.querySelector('.radio-btn').classList.remove('checked');
+  });
+  item.classList.add('selected');
+  item.querySelector('.radio-btn').classList.add('checked');
+  updateCatHeader(cat);
+  updateBudget();
+}
+
+function updateCatHeader(cat) {
+  const sel = document.querySelector(`.option-item.selected[data-cat="${cat}"]`);
+  if (!sel) return;
+  const eur = parseFloat(sel.dataset.eur) || 0;
+  const brl = parseFloat(sel.dataset.brl) || 0;
+  const name = sel.dataset.name;
+  const nameEl = document.getElementById('sel-name-' + cat);
+  const priceEl = document.getElementById('sel-price-' + cat);
+  const brlEl = document.getElementById('sel-brl-' + cat);
+  if (nameEl) nameEl.textContent = name;
+  if (priceEl) priceEl.textContent = eur > 0 ? '€ ' + Math.round(eur) : (cat === 'cpu' ? 'R$ ' + brl : '—');
+  if (brlEl) {
+    if (cat === 'cpu') { brlEl.textContent = ''; }
+    else if (eur > 0) brlEl.textContent = 'R$ ' + Math.round(eur * EUR_BRL).toLocaleString('pt-BR');
+    else brlEl.textContent = '';
+  }
+}
+
+function updateBudget() {
+  let totalEUR = 0;
+  const cats = ['gpu','mobo','ram','ssd','aio','psu','case'];
+  cats.forEach(cat => {
+    const sel = document.querySelector(`.option-item.selected[data-cat="${cat}"]`);
+    if (sel) totalEUR += parseFloat(sel.dataset.eur) || 0;
+  });
+  const totalBRL = CPU_PAID + Math.round(totalEUR * EUR_BRL);
+  const pct = (totalBRL / TETO) * 100;
+  const remaining = TETO - totalBRL;
+
+  document.getElementById('totalBRL').textContent = 'R$ ' + totalBRL.toLocaleString('pt-BR');
+  document.getElementById('totalEUR').textContent = '€ ' + Math.round(totalEUR) + ' × 5,80 + CPU pago';
+  document.getElementById('budgetLeft').textContent = remaining >= 0
+    ? 'Sobram R$ ' + remaining.toLocaleString('pt-BR')
+    : 'Excede em R$ ' + Math.abs(remaining).toLocaleString('pt-BR');
+
+  const fill = document.getElementById('budgetFill');
+  const pctEl = document.getElementById('budgetPct');
+  fill.style.width = Math.min(pct, 100) + '%';
+  fill.className = 'budget-fill' + (pct > 100 ? ' over' : '');
+  pctEl.textContent = Math.round(pct) + '%';
+  pctEl.style.color = pct > 100 ? '#f87171' : pct > 90 ? 'var(--pending)' : 'var(--accent)';
+
+  const totalValEl = document.getElementById('totalBRL');
+  totalValEl.className = 'bsum-val' + (pct > 100 ? ' red' : pct > 90 ? ' amber' : ' green');
+}
+
+function toggleDetails(item) {
+  const details = item.querySelector('.option-details');
+  const arrow = item.querySelector('.toggle-arrow');
+  if (!details) return;
+  const isOpen = details.classList.toggle('open');
+  if (arrow) arrow.classList.toggle('open', isOpen);
+}
+
+function showTab(name, btn) {
   document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
-  event.target.classList.add('active');
+  if (btn) btn.classList.add('active');
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
-function toggleCard(card) {
-  const details = card.querySelector('.card-details');
-  const arrow = card.querySelector('.expand-arrow');
-  if (!details) return;
-  const isOpen = details.classList.toggle('open');
-  if (arrow) arrow.classList.toggle('rotated', isOpen);
-}
-
-// Budget calc
-const total = 9816;
-const teto = 10000;
-const pct = Math.min((total / teto) * 100, 100);
-document.getElementById('budgetFill').style.width = pct + '%';
-document.getElementById('budgetPct').textContent = Math.round(pct) + '%';
+updateBudget();
 </script>
 </body>
 </html>
